@@ -12,7 +12,11 @@ class HeaderComponent(BasePage):
 
     SEARCH_FIELD: tuple[str, str] = (By.ID, "gh-ac")
     SEARCH_BUTTON: tuple[str, str] = (By.ID, "gh-btn")
-    MOTORS_LINK: tuple[str, str] = (By.LINK_TEXT, "Motors")
+    # href-based selector: resilient to eBay's responsive nav collapsing the link text
+    MOTORS_LINK: tuple[str, str] = (
+        By.CSS_SELECTOR,
+        "a[href*='bn_1865334'], a[href*='motors'][href*='ebay']",
+    )
 
     @allure.step("Search for item: '{item}'")
     def search_item(self, item: str) -> None:

@@ -111,18 +111,25 @@ def browser(request: pytest.FixtureRequest) -> Generator[webdriver.Remote, None,
 
     elif browser_name.lower() == "firefox":
         firefox_options = FirefoxOptions()
+        firefox_options.add_argument("--width=1920")
+        firefox_options.add_argument("--height=1080")
+        firefox_options.set_preference("dom.webdriver.enabled", False)
+        firefox_options.set_preference("useAutomationExtension", False)
         if headless:
             firefox_options.add_argument("-headless")
+
         driver = webdriver.Firefox(options=firefox_options)
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")
 
+    # Set uniform viewport size for cross-browser consistency
+    driver.set_window_size(1920, 1080)
+    if not headless:
+        driver.maximize_window()
+
     # Configure timeouts for network flakiness resilience
     driver.set_page_load_timeout(settings.page_load_timeout)
     driver.set_script_timeout(settings.script_timeout)
-
-    if not headless:
-        driver.maximize_window()
 
     yield driver
 
