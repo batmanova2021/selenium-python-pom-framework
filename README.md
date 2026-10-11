@@ -1,8 +1,8 @@
 # Enterprise Selenium Python POM Framework
 
-A production-grade, FAANG-caliber UI test automation framework built with **Python 3.12+**, **Selenium WebDriver 4**, **PyTest**, and **Allure**, managed with **[uv](https://docs.astral.sh/uv/)**.
+A UI test automation framework built with **Python 3.12+**, **Selenium WebDriver 4**, **PyTest**, and **Allure**, managed with **[uv](https://docs.astral.sh/uv/)**.
 
-Designed following Big Tech test engineering principles: strict Page Object / Component separation, zero POM assertions, 12-factor configuration, comprehensive static typing, structured observability, and CI/CD quality gates.
+Uses Page Objects and reusable components, assertions in tests, environment-based configuration, static typing, logging, and CI/CD quality gates.
 
 ---
 
@@ -31,6 +31,16 @@ Designed following Big Tech test engineering principles: strict Page Object / Co
 - **12-Factor Configuration**: Environment variables and default parameters are centralized in [`config.py`](config.py) using typed dataclasses with zero hardcoded URLs or timeouts in tests.
 - **Observability**: Standard Python `logging` streams structured logs (`INFO`, `DEBUG`) through PyTest live CLI, paired with Allure step decorations (`@allure.step`).
 - **Resilience Against Flakiness**: Anti-bot user-agent resolution, page load and script timeouts, plus automatic retries in CI (`--reruns 2 --reruns-delay 1`).
+
+### Locator and readiness policy
+
+- Prefer stable unique IDs; use short CSS selectors based on meaningful attributes when IDs are unavailable. Keep locators inside page objects and components, avoiding positional XPath and generated class names.
+- The search input uses `gh-ac`. The search button is scoped to the `gh-f` form's submit button. Motors uses the homepage navigation ID, its link class, and category URL to exclude hidden menu duplicates. These header selectors were checked against the live homepage on October 11, 2026.
+- Search readiness requires the requested query in the title and a visible `.srp-results` container. The existing results selector still needs live confirmation: eBay returned an error page during the latest search inspection.
+- An eBay-branded title alone does not establish page readiness. Homepage readiness requires the search input; Motors requires its destination title and header. Business assertions remain in tests.
+- Homepage loading retries only the explicitly recognized “Something went wrong on our end” page, with at most three loads and a warning for each retry. Other failures propagate immediately; persistent error pages still fail. This is a recovery policy for the external demo site, not a substitute for investigating failed or rerun tests.
+- The error-page XPath intentionally matches a leaf containing the observed English message because the failure artifact supplied no stable error-element ID. It is text- and locale-dependent and should be replaced with a stable identifier if one is established.
+- Tests run against an external production site, whose availability and responses are outside this repository's control. Passing lint and mocked recovery tests cannot establish cross-browser reliability or company-specific compliance.
 
 ---
 

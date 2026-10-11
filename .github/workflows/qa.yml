@@ -60,6 +60,9 @@ jobs:
       - name: Run Mypy (type check)
         run: uv run mypy pages tests config.py
 
+      - name: Run page readiness and recovery unit tests
+        run: uv run pytest tests/test_home_page_recovery.py tests/test_search_readiness.py
+
   # ============================================================
   # 2. Browser Tests: Smoke on Push/PR, Regression on Nightly
   # ============================================================

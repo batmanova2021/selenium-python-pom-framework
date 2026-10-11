@@ -11,14 +11,17 @@ class HeaderComponent(BasePage):
     """Encapsulates the global header, search input, and top navigation links."""
 
     SEARCH_FIELD: tuple[str, str] = (By.ID, "gh-ac")
-    SEARCH_BUTTON: tuple[str, str] = (By.ID, "gh-btn")
-    MOTORS_LINK: tuple[str, str] = (By.PARTIAL_LINK_TEXT, "Motors")
+    SEARCH_BUTTON: tuple[str, str] = (By.CSS_SELECTOR, "#gh-f button[type='submit']")
+    MOTORS_LINK: tuple[str, str] = (
+        By.CSS_SELECTOR,
+        "#vl-flyout-nav a.vl-flyout-nav__link-container[href*='/b/Auto-Parts-and-Vehicles/6000/']",
+    )
 
     @allure.step("Search for item: '{item}'")
     def search_item(self, item: str) -> None:
         """Type search item and submit using ENTER key."""
         self.logger.info("Searching for item: '%s'", item)
-        search_field = self.wait_until_visible(self.SEARCH_FIELD)
+        search_field = self.wait_until_clickable(self.SEARCH_FIELD)
         search_field.clear()
         search_field.send_keys(item + Keys.ENTER)
 
@@ -40,6 +43,5 @@ class HeaderComponent(BasePage):
     def click_motors_link(self) -> None:
         """Click on the eBay Motors header link."""
         self.logger.info("Clicking Motors header link")
-        self.wait_until_visible(self.MOTORS_LINK)
         motors_link = self.wait_until_clickable(self.MOTORS_LINK)
         motors_link.click()

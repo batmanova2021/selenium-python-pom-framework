@@ -113,8 +113,6 @@ def browser(request: pytest.FixtureRequest) -> Generator[webdriver.Remote, None,
         firefox_options = FirefoxOptions()
         firefox_options.add_argument("--width=1920")
         firefox_options.add_argument("--height=1080")
-        firefox_options.set_preference("dom.webdriver.enabled", False)
-        firefox_options.set_preference("useAutomationExtension", False)
         if headless:
             firefox_options.add_argument("-headless")
 
@@ -141,6 +139,13 @@ def browser(request: pytest.FixtureRequest) -> Generator[webdriver.Remote, None,
             driver.get_screenshot_as_png(),
             name=f"Failure_Screenshot_{browser_name}",
             attachment_type=AttachmentType.PNG,
+        )
+        allure.attach(driver.page_source, name="Page_Source", attachment_type=AttachmentType.HTML)
+        allure.attach(
+            f"URL: {driver.current_url}\nTitle: {driver.title}\n"
+            f"Capabilities: {driver.capabilities}",
+            name="Browser_Context",
+            attachment_type=AttachmentType.TEXT,
         )
         if hasattr(driver, "get_log"):
             try:

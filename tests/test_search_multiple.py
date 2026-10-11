@@ -29,6 +29,6 @@ def test_search_multiple_items(browser: WebDriver, item: str) -> None:
 
     home_page.search_item(item)
     actual_title = search_result_page.wait_for_search_results(item)
-    assert item.lower() in actual_title.lower() or "ebay" in actual_title.lower(), (
+    assert item.lower() in actual_title.lower(), (
         f"Expected '{item}' in title, but got '{actual_title}'"
     )

@@ -20,9 +20,10 @@ class EbaySearchResultPage(BasePage):
 
     @allure.step("Wait for search results to load for item: '{item}'")
     def wait_for_search_results(self, item: str) -> str:
-        """Wait until title contains eBay and return page title."""
+        """Wait for the requested query and visible results before returning the title."""
         self.logger.info("Waiting for search results page for: '%s'", item)
-        self.wait.until(EC.title_contains("eBay"))
+        self.wait.until(lambda driver: item.casefold() in driver.title.casefold())
+        self.wait_until_visible(self.RESULTS_CONTAINER)
         return self.get_title()
 
     def get_title(self) -> str:
