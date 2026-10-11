@@ -21,6 +21,7 @@ def test_motors_title(browser: WebDriver) -> None:
     """Verify navigation to eBay Motors and its resulting page title."""
     home_page = EbayHomePage(browser)
     home_page.load_page()
+    home_page.wait_for_page_loaded()  # ensure JS nav is hydrated before clicking
     home_page.click_motors_link()
 
     actual_title = home_page.get_title()

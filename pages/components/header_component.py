@@ -12,11 +12,7 @@ class HeaderComponent(BasePage):
 
     SEARCH_FIELD: tuple[str, str] = (By.ID, "gh-ac")
     SEARCH_BUTTON: tuple[str, str] = (By.ID, "gh-btn")
-    # href-based selector: resilient to eBay's responsive nav collapsing the link text
-    MOTORS_LINK: tuple[str, str] = (
-        By.CSS_SELECTOR,
-        "a[href*='bn_1865334'], a[href*='motors'][href*='ebay']",
-    )
+    MOTORS_LINK: tuple[str, str] = (By.PARTIAL_LINK_TEXT, "Motors")
 
     @allure.step("Search for item: '{item}'")
     def search_item(self, item: str) -> None:
@@ -44,5 +40,6 @@ class HeaderComponent(BasePage):
     def click_motors_link(self) -> None:
         """Click on the eBay Motors header link."""
         self.logger.info("Clicking Motors header link")
+        self.wait_until_visible(self.MOTORS_LINK)
         motors_link = self.wait_until_clickable(self.MOTORS_LINK)
         motors_link.click()
