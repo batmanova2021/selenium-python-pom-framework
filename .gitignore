@@ -1,0 +1,70 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Virtual Environments ---
+.venv/
+venv/
+ENV/
+env/
+.python-version
+
+# --- Testing & Coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+.tox/
+.nox/
+reports/
+
+# --- Allure Reports ---
+allure-results/
+allure-report/
+*.allure
+
+# --- Selenium / WebDriver ---
+geckodriver.log
+chromedriver.log
+*.log
+
+# --- Environment Variables & Secrets ---
+.env
+.env.*
+!.env.example
+
+# --- PyCharm / IntelliJ ---
+.idea/
+*.iml
+*.iws
+out/
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- uv ---
