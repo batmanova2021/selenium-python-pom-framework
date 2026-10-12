@@ -35,11 +35,6 @@ Uses Page Objects and reusable components, assertions in tests, environment-base
 ### Locator and readiness policy
 
 - Prefer stable unique IDs; use short CSS selectors based on meaningful attributes when IDs are unavailable. Keep locators inside page objects and components, avoiding positional XPath and generated class names.
-- The search input uses `gh-ac`. The search button is scoped to the `gh-f` form's submit button. Motors uses the homepage navigation ID, its link class, and category URL to exclude hidden menu duplicates. These header selectors were checked against the live homepage on October 11, 2026.
-- Search readiness requires the requested query in the title and a visible `.srp-results` container. The existing results selector still needs live confirmation: eBay returned an error page during the latest search inspection.
-- An eBay-branded title alone does not establish page readiness. Homepage readiness requires the search input; Motors requires its destination title and header. Business assertions remain in tests.
-- Homepage loading retries only the explicitly recognized “Something went wrong on our end” page, with at most three loads and a warning for each retry. Other failures propagate immediately; persistent error pages still fail. This is a recovery policy for the external demo site, not a substitute for investigating failed or rerun tests.
-- The error-page XPath intentionally matches a leaf containing the observed English message because the failure artifact supplied no stable error-element ID. It is text- and locale-dependent and should be replaced with a stable identifier if one is established.
 - Tests run against an external production site, whose availability and responses are outside this repository's control. Passing lint and mocked recovery tests cannot establish cross-browser reliability or company-specific compliance.
 
 ---
@@ -130,6 +125,15 @@ uv run pytest --browser=chrome --headless
 # Run tests in Firefox
 uv run pytest --browser=firefox --headless
 ```
+
+To watch the Motors smoke test from the PyCharm terminal, run from the repository root:
+
+```bash
+SELENIUM_HEADLESS=false uv run pytest tests/test_title.py::test_motors_title --browser=chrome --reruns 0 -s
+SELENIUM_HEADLESS=false uv run pytest tests/test_title.py::test_motors_title --browser=firefox --reruns 0 -s
+```
+
+These commands use macOS/Linux shell syntax and open a visible browser. The browser closes when the test finishes. For interactive inspection after a failure, append `--pdb`; type `c` at the debugger prompt to finish and close the browser.
 
 ### Targeted Suites
 

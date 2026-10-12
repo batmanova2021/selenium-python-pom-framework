@@ -11,11 +11,8 @@ class HeaderComponent(BasePage):
     """Encapsulates the global header, search input, and top navigation links."""
 
     SEARCH_FIELD: tuple[str, str] = (By.ID, "gh-ac")
-    SEARCH_BUTTON: tuple[str, str] = (By.CSS_SELECTOR, "#gh-f button[type='submit']")
-    MOTORS_LINK: tuple[str, str] = (
-        By.CSS_SELECTOR,
-        "#vl-flyout-nav a.vl-flyout-nav__link-container[href*='/b/Auto-Parts-and-Vehicles/6000/']",
-    )
+    SEARCH_BUTTON: tuple[str, str] = (By.ID, "gh-search-btn")
+    MOTORS_LINK: tuple[str, str] = (By.LINK_TEXT, "Motors")
 
     @allure.step("Search for item: '{item}'")
     def search_item(self, item: str) -> None:
